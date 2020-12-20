@@ -51,15 +51,16 @@ Please read the official guide on how to use libraries and always include them f
 
 ##### Buttons/Buzzer not working?
 
-Again, you have to make sure that the pins are setup correctly (Button_0, Button_1, Button_PP, Buzzer)
+Make sure that the pins are setup correctly (BUTTON_0, BUTTON_1, BUTTON_PP, BUZZER)
 
-- Led Dot Matrix not working?
-  is USER_OPTIONS in HT1632 library set?
+##### Led Dot Matrix not working?
+
+- is USER_OPTIONS in HT1632 library set?
   In the README file of HT1632 library, in the code section you may have missed this:
 
   > Before running the code, go to HT1632.h and check the USER OPTIONS section and follow the instructions to specify the type of board you are using.
 
-- Pins not connected properly?
+- is the matrix connected properly?
   Please make sure that the PINs defined in the source code (CS1, WR, DATA) match the connections on your arduino or your led matrix.
 
 ### 6. Future
