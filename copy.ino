@@ -3,9 +3,6 @@
 #include <HT1632.h>
 #include <font_5x4.h>
 
-# define IMG_WIDTH         5
-# define IMG_HEIGHT        5
-
 # define ALLOWED_CHARS    10
 # define BUTTON_0         3
 # define BUTTON_1         4
