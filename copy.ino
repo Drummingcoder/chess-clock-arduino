@@ -38,13 +38,6 @@
 # define ON               1
 # define OFF              0
 
-
-const byte IMG_SQUARE_WHITE[] PROGMEM = {0b11111000, 0b10001000, 0b10001000, 0b10001000, 0b11111000};
-const byte IMG_SQUARE_BLACK[] PROGMEM = {0b11111000, 0b11111000, 0b11111000, 0b11111000, 0b11111000};
-const byte IMG_CLOCK[] PROGMEM = {0b00111000, 0b01000100, 0b10010010, 0b10110010, 0b10000010, 0b01000100, 0b00111000};
-const byte IMG_PAWN[] PROGMEM = { 0b00000001, 0b00000011, 0b11010111, 0b11111111, 0b11111111, 0b11010111, 0b00000011, 0b00000001 }; 
-const byte IMG_CURSOR[] PROGMEM = { 0b00000000, 0b00000001, 0b00000001, 0b00000001, 0b00000001, 0b00000001, 0b00000001, 0b00000000 }; 
-
 struct Config {
   int _time = DEFAULT_TIME;
   int _plus = PLUS_TIME;
@@ -81,23 +74,16 @@ String printDisplayTime(int time) {
 class Player {
     int id;
     int time;
-    const byte* image;
   public:
-    Player(int id, const byte* image);
+    Player(int id);
     void tick(void);
     void setTime(int timeVal);
-    const byte* getImage(void);
-    String getDiplayTime(void);
+    String getDisplayTime(void);
     int getTime(void);
 };
 
-Player::Player(int id, const byte* image) {
+Player::Player(int id) {
    this->id = id;
-   this->image = image;
-}
-
-const byte* Player::getImage(void) {
-  return this->image;
 }
 
 void Player::setTime(int timeVal) {
@@ -112,7 +98,7 @@ void Player::tick(void) {
   this->time = this->time - 1;
 }
 
-String Player::getDiplayTime(void) {
+String Player::getDisplayTime(void) {
   return printDisplayTime(this->time);
 }
 
@@ -215,9 +201,9 @@ int Game::getActivePlayer() {
 
 String Game::getDisplayText(void) {
   if (this->activePlayer == WHITE) {
-    return this->white->getDiplayTime();
+    return this->white->getDisplayTime();
   }
-  return this->black->getDiplayTime();
+  return this->black->getDisplayTime();
 }
 
 Player p1(WHITE, IMG_SQUARE_WHITE);
@@ -382,12 +368,10 @@ void loopGamePlay() {
     return;
   }
 
-  const byte* image = game.getActivePlayer() == WHITE ? p1.getImage() : p2.getImage();
   gameState = game.getDisplayText();
 
   HT1632.clear();
   HT1632.drawText(gameState.c_str(), 0, 2, FONT_5X4, FONT_5X4_END, FONT_5X4_HEIGHT);
-  HT1632.drawImage(image, IMG_WIDTH,  IMG_HEIGHT, 2, 2);
   HT1632.render();
 
   // handle game loop
