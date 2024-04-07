@@ -1,15 +1,16 @@
 #include <EEvar.h>
 #include <OneButton.h>
+#include <Adafruit_LiquidCrystal.h>
 //change to my display
 #include <HT1632.h>
 #include <font_5x4.h>
 
 # define ALLOWED_CHARS    10
 //change for my connections
-# define BUTTON_0         3
-# define BUTTON_1         4
-# define BUTTON_PP        5
-# define BUZZER           7
+# define BUTTON_0         2
+# define BUTTON_1         3
+# define BUTTON_PP        4
+# define BUZZER           5
 
 //change to my display
 # define CS1              9
