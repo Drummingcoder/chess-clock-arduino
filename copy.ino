@@ -1,14 +1,17 @@
 #include <EEvar.h>
 #include <OneButton.h>
+//change to my display
 #include <HT1632.h>
 #include <font_5x4.h>
 
 # define ALLOWED_CHARS    10
+//change for my connections
 # define BUTTON_0         3
 # define BUTTON_1         4
 # define BUTTON_PP        5
 # define BUZZER           7
 
+//change to my display
 # define CS1              9
 # define WR               10
 # define DATA             11
@@ -203,8 +206,8 @@ String Game::getDisplayText(void) {
   return this->black->getDisplayTime();
 }
 
-Player p1(WHITE, IMG_SQUARE_WHITE);
-Player p2(BLACK, IMG_SQUARE_BLACK);
+Player p1(WHITE);
+Player p2(BLACK);
 
 Game game(&p1, &p2);
 
@@ -231,7 +234,7 @@ void setup () {
   // setup piezzo pin
   pinMode(BUZZER, OUTPUT);
   
-  // setup display
+  // setup display, change to my display
   HT1632.begin(CS1, WR, DATA);
   
   // setup serial
@@ -241,6 +244,7 @@ void setup () {
   game.reset(configVar->_time);
 }
 
+//will be changing
 void blinkPixels() {
   int init = editMode == EDIT_MINS ? 10 : 21;
   for (int i = init; i < init + 10; i ++) {
@@ -295,6 +299,7 @@ void loopEditMode() {
 
   String initialTime = printDisplayTime(configVar->_time);
 
+  //change to my display
   HT1632.clear();
   HT1632.drawText(initialTime.c_str(), 0, 2, FONT_5X4, FONT_5X4_END, FONT_5X4_HEIGHT);
   HT1632.drawImage(IMG_CLOCK, 8, 8, 1, 1);
@@ -353,7 +358,7 @@ void loopGamePlay() {
   });
   
   if (game.getState() == GAME_ENDED && game.getWinner() != NO_ONE ) {
-    // show winner
+    // show winner, change to show no image
     String winner = game.getWinner() == WHITE ? "White" : "Black";
     HT1632.drawText(winner.c_str(), 9, 2, FONT_5X4, FONT_5X4_END, FONT_5X4_HEIGHT);
     HT1632.drawImage(IMG_PAWN, 8,  8, 0, 0);
