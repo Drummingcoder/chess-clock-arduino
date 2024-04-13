@@ -12,11 +12,6 @@
 # define BUTTON_PP        4
 # define BUZZER           5
 
-//change to my display
-# define CS1              9
-# define WR               10
-# define DATA             11
-
 # define GAME_READY       0
 # define GAME_STARTED     1
 # define GAME_PAUSED      2
@@ -227,6 +222,7 @@ unsigned long now = millis();
 int editBlink = ON;
 
 void setup () {
+  
   // setup button pins
   pinMode(BUTTON_0, INPUT);
   pinMode(BUTTON_1, INPUT);
@@ -234,9 +230,12 @@ void setup () {
   
   // setup piezzo pin
   pinMode(BUZZER, OUTPUT);
-  
+
+  Adafruit_LiquidCrystal lcd_1(13, 12, 8, 9, 10, 11);
+  lcd_1.begin(16, 2);
+  lcd_1.display();
   // setup display, change to my display
-  HT1632.begin(CS1, WR, DATA);
+  
   
   // setup serial
   Serial.begin(9600);  
