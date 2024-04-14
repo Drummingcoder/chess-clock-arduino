@@ -2,7 +2,6 @@
 #include <OneButton.h>
 #include <Adafruit_LiquidCrystal.h>
 //change to my display
-#include <HT1632.h>
 #include <font_5x4.h>
 
 # define ALLOWED_CHARS    10
@@ -235,10 +234,8 @@ void setup () {
   lcd_1.begin(16, 2);
   lcd_1.display();
   // setup display, change to my display
-  
-  
-  // setup serial
-  Serial.begin(9600);  
+  lcd_1.setCursor(0, 0);
+  lcd_1.print("White:    Black:");
 
   // reset game
   game.reset(configVar->_time);
@@ -247,11 +244,8 @@ void setup () {
 //will be changing
 void blinkPixels() {
   int init = editMode == EDIT_MINS ? 10 : 21;
-  for (int i = init; i < init + 10; i ++) {
-    for (int j = 0; j < 8; j++) {
-        HT1632.clearPixel(i, j); 
-    }
-  }
+  lcd_1.noDisplay();
+  lcd_1.display();
 }
 
 void loopEditMode() {
@@ -267,13 +261,13 @@ void loopEditMode() {
   buttonDR0.attachClick([]() {
     if (editMode == EDIT_MINS) {
       if (configVar->_time >= MINUTE) {
-        configVar->_time = configVar->_time - MINUTE;
+        configVar->_time -= MINUTE;
         configVar.save();           
       }
     }
     if (editMode == EDIT_SECS) {
       if (configVar->_time >= 0) {
-        configVar->_time = configVar->_time - SECOND;
+        configVar->_time -= SECOND;
         configVar.save();         
       }
     }
@@ -281,11 +275,11 @@ void loopEditMode() {
   
   buttonDR1.attachClick([]() {
     if (editMode == EDIT_MINS) {
-      configVar->_time = configVar->_time + MINUTE;
+      configVar->_time += MINUTE;
       configVar.save();         
     }
     if (editMode == EDIT_SECS) {
-      configVar->_time = configVar->_time + SECOND;
+      configVar->_time += SECOND;
       configVar.save();         
     }
   });
@@ -299,15 +293,9 @@ void loopEditMode() {
 
   String initialTime = printDisplayTime(configVar->_time);
 
-  //change to my display
-  HT1632.clear();
-  HT1632.drawText(initialTime.c_str(), 0, 2, FONT_5X4, FONT_5X4_END, FONT_5X4_HEIGHT);
-  HT1632.drawImage(IMG_CLOCK, 8, 8, 1, 1);
-
   if (editBlink == ON) {
     blinkPixels();
   }
-  HT1632.render();
 }
 
 void loopGamePlay() {
@@ -361,7 +349,6 @@ void loopGamePlay() {
     // show winner, change to show no image
     String winner = game.getWinner() == WHITE ? "White" : "Black";
     HT1632.drawText(winner.c_str(), 9, 2, FONT_5X4, FONT_5X4_END, FONT_5X4_HEIGHT);
-    HT1632.drawImage(IMG_PAWN, 8,  8, 0, 0);
     HT1632.render();
 
     for (int i = 0; i < 3000; i ++) {
@@ -371,10 +358,6 @@ void loopGamePlay() {
   }
 
   gameState = game.getDisplayText();
-
-  HT1632.clear();
-  HT1632.drawText(gameState.c_str(), 0, 2, FONT_5X4, FONT_5X4_END, FONT_5X4_HEIGHT);
-  HT1632.render();
 
   // handle game loop
   now = millis();
