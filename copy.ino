@@ -1,8 +1,6 @@
 #include <EEvar.h>
 #include <OneButton.h>
 #include <Adafruit_LiquidCrystal.h>
-//change to my display
-#include <font_5x4.h>
 
 # define ALLOWED_CHARS    10
 //change for my connections
@@ -236,6 +234,7 @@ void setup () {
   // setup display, change to my display
   lcd_1.setCursor(0, 0);
   lcd_1.print("White:    Black:");
+  lcd_1.setCursor(0, 1);
 
   // reset game
   game.reset(configVar->_time);
@@ -333,7 +332,7 @@ void loopGamePlay() {
 
   // reset game if buttons are pressed simultaneously
   buttonDRPP.attachDoubleClick([]() {
-    HT1632.clear();
+    lcd_1.clear();
     noTone(BUZZER);
     game.reset(configVar->_time);
     return;
@@ -348,8 +347,11 @@ void loopGamePlay() {
   if (game.getState() == GAME_ENDED && game.getWinner() != NO_ONE ) {
     // show winner, change to show no image
     String winner = game.getWinner() == WHITE ? "White" : "Black";
-    HT1632.drawText(winner.c_str(), 9, 2, FONT_5X4, FONT_5X4_END, FONT_5X4_HEIGHT);
-    HT1632.render();
+    lcd_1.clear();
+    lcd_1.setCursor(0,0);
+    lcd_1.print("The winner is: ");
+    lcd_1.setCursor(0,1);
+    lcd_1.print(winner);
 
     for (int i = 0; i < 3000; i ++) {
       tone(BUZZER, i);  
